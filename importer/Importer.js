@@ -1,21 +1,34 @@
+const EventEmitter = require('events');
 const fs = require('fs');
-const csvjson = require('csvjson')
+const csvjson = require('csvjson');
 
-class Importer {
-  constructor(dirwatcher){
+class Importer extends EventEmitter {
+  constructor(dirwatcher) {
+    super();
     this.dirwatcher = dirwatcher;
-    this.importListener = (path) => this.import(path);
-    this.importSyncListener = (path) => this.importSync(path);
+    this.importListener = (path) => { let result = this.import(path); this.emit('done', result) };
+    this.importSyncListener = (path) => { let result = this.importSync(path); this.emit('done', result) };
+  }
+
+  startImporting(from, delay) {
+    this.dirwatcher.watch(from, delay);
     this.dirwatcher.on('changed', this.importListener);
-    //this.dirwatcher.on('changed', this.importSyncListener);
   }
 
-  stopImporting(){
-    this.dirwatcher.removeListener('changed', this.importListener);    
+  startImportingSync(from, delay) {
+    this.dirwatcher.watch(from, delay);
+    this.dirwatcher.on('changed', this.importSyncListener);
   }
 
-  stopImportingSync(){
-     this.dirwatcher.removeListener('changed', this.importListenerSync);    
+  stopImporting() {
+    console.log('stop impoting')
+    this.dirwatcher.removeListener('changed', this.importListener);
+    this.dirwatcher.stopWatching();
+  }
+
+  stopImportingSync() {
+    this.dirwatcher.removeListener('changed', this.importListenerSync);
+    this.dirwatcher.stopWatching();
   }
 
   import(path) {
