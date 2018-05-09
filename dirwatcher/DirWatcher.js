@@ -4,27 +4,28 @@ const fs = require('fs');
 class DirWatcher extends EventEmitter {
   constructor() {
     super();
-    this._myFiles = [];
+    this._prevFiles = [];
   }
   watch(path, delay) {
-    let changedFiles = [];
     setInterval(() => {
       fs.readdir(path, (err, files) => {
+        let changedFiles = [];
+        let isUpdated = false;
 
-        if (this._myFiles && this._myFiles.length === 0) {
-          this._myFiles.push(...files);
-          changedFiles.push(...files);
-        }
+        files.forEach(function (file) {
+          if (!this._prevFiles.includes(file)) {
+            isUpdated = true;
+            changedFiles.push(file);
+          }
+        }, this);
 
+        this._prevFiles = Array.from(files);
 
-        
+        changedFiles.forEach(function (changedFile) {
+          let filePath = path + '/' + changedFile;
+          this.emit('changed', filePath);
+        }, this);
       });
-
-      for (let i = 0;  i < changedFiles.length; i++) {       
-        let filePath = path + '/' + changedFiles[i];      
-        this.emit('changed', filePath);
-      }     
-      changedFiles = [];
     }, delay)
   }
 }
