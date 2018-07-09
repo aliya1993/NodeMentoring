@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon --exec babel-node app.js",
+    "stream": "nodemon --exec babel-node utils/stream.js",
     "test": "test"
   },
   "repository": {
@@ -28,6 +29,8 @@
   },
   "dependencies": {
     "csvjson": "^5.0.0",
-    "events": "^2.0.0"
+    "events": "^2.0.0",
+    "minimist": "^1.2.0",
+    "request": "^2.87.0"
   }
 }
