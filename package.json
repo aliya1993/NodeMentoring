@@ -4,7 +4,7 @@
   "description": "Node mentoring project",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon --exec babel-node app.js",
+    "start": "nodemon --exec babel-node index.js",
     "stream": "nodemon --exec babel-node utils/stream.js",
     "test": "test"
   },
@@ -28,9 +28,13 @@
     "nodemon": "^1.17.3"
   },
   "dependencies": {
+    "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.3",
     "csvjson": "^5.0.0",
     "events": "^2.0.0",
+    "express": "^4.16.3",
     "minimist": "^1.2.0",
+    "query-string": "^6.1.0",
     "request": "^2.87.0"
   }
 }
