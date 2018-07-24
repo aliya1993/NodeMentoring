@@ -73,10 +73,12 @@ const cssBundler = (path) => {
       console.log('No css filed found path: ', path);
     }
     let writeStream = fs.createWriteStream(path + '\\' + 'bundle.css');
+    
     cssFiles.slice(0, 3).forEach(function (file) {
       let readStream = fs.createReadStream(path + '\\' + file);
       readStream.pipe(writeStream, { end: false });
     }, this);
+
     writeStream.end(cssLine);
   });
 }

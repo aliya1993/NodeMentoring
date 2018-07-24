@@ -12,7 +12,7 @@ const bodyParser = require('body-parser');
 const app = express();
 
 app.use(cookieParserImp());
-app.use(bodyParser());
+app.use(bodyParser.json());
 app.use(function (req, res, next) {
   req
   cookieParser(req);
